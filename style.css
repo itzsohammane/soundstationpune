@@ -1,0 +1,814 @@
+/* ==========================================================================
+   1. GLOBAL VARIABLES & RESET
+   ========================================================================== */
+
+/* Import Poppins Font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #F4F1EA;       /* Sophisticated warm beige */
+  --text-dark: #2C2C2C;      /* Dark charcoal for high contrast headings */
+  --text-muted: #4A4A4A;     /* Softer charcoal for paragraph text */
+  --accent-color: #ff4500;   /* Sound Station Pune vibrant orange */
+  --pure-white: #ffffff;
+  --dark-overlay: rgba(0, 0, 0, 0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden; /* Prevents horizontal scrolling on mobile */
+}
+
+/* ==========================================================================
+   2. NAVIGATION BAR (Mobile Default)
+   ========================================================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 15px 20px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.logo img {
+  display: block;
+  object-fit: contain;
+}
+
+/* Hamburger Menu Button */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-dark);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+/* Nav Links Dropdown for Mobile */
+.nav-links {
+  display: none; /* Hidden by default on mobile */
+  flex-direction: column;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--bg-color);
+  list-style: none;
+  text-align: center;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+}
+
+.nav-links.active {
+  display: flex; /* Triggered by JavaScript */
+}
+
+.nav-links li {
+  width: 100%;
+}
+
+.nav-links a {
+  display: block;
+  padding: 15px 20px;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent-color);
+}
+
+/* ==========================================================================
+   3. HERO SECTION & CAROUSEL
+   ========================================================================== */
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 70vh; /* Takes up 70% of the screen height on mobile */
+  min-height: 500px;
+  background-color: #000;
+}
+
+.carousel-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Background Image Placeholders */
+.slide-services { background-image: url("website%20images/hero-service.png"); }
+.slide-products { background-image: url("website%20images/hero-product.png"); }
+.slide-contact  { background-image: url("website%20images/hero-contact.png"); }
+
+/* Dark Overlay for Text Readability */
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--dark-overlay);
+  z-index: 1;
+}
+
+.carousel-content {
+  position: relative;
+  z-index: 2;
+  color: var(--pure-white);
+  text-align: center;
+  padding: 0 20px;
+  max-width: 800px;
+}
+
+.carousel-content h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+.carousel-content p {
+  font-size: 1rem;
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.cta-btn {
+  padding: 12px 28px;
+  font-size: 1rem;
+  background-color: var(--accent-color);
+  color: var(--pure-white);
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cta-btn:hover {
+  background-color: #cc3700;
+}
+
+/* Carousel Arrows */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  font-size: 18px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+  z-index: 10;
+}
+
+.nav-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+/* Carousel Indicators (Dots) */
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: var(--pure-white);
+}
+
+/* ==========================================================================
+   4. ABOUT US SECTION
+   ========================================================================== */
+#about {
+  padding: 60px 20px;
+  background-color: var(--bg-color);
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+#about h2 {
+  font-size: 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Decorative Orange Underline */
+#about h2::after {
+  content: '';
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent-color);
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column; /* Stacked on mobile */
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #EAE6DF; /* Placeholder color before image loads */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.about-text h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: var(--text-dark);
+}
+
+.about-text p {
+  font-size: 15px;
+  color: var(--text-muted);
+  text-align: justify;
+}
+
+/* ==========================================================================
+   5. SERVICES SECTION (Grid & Hover Animations)
+   ========================================================================== */
+.services {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.service-container1, .service-container2 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.service-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 300px;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Background Image Placeholders */
+.card-intl   { background-image: url("website%20images/international-brand.png"); }
+.card-indian { background-image: url("website%20images/indian-brand.png"); }
+.card-mfg    { background-image: url("website%20images/speaker-manu.png"); }
+.card-lights { background-image: url("website%20images/stage-light.png"); }
+
+.card-darkener {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  transition: background 0.4s ease;
+  z-index: 1;
+}
+
+.service-title {
+  position: relative;
+  z-index: 2;
+  color: var(--pure-white);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
+  transition: transform 0.4s ease;
+  text-align: center;
+  padding: 0 10px;
+}
+
+/* Sliding Info Box */
+.service-overlay {
+  position: absolute;
+  bottom: -100%; /* Hidden off the bottom */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 30px 20px;
+  text-align: center;
+  z-index: 2;
+  transition: bottom 0.4s ease-in-out;
+}
+
+.service-overlay p {
+  color: var(--pure-white);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.2s; /* Delayed fade in */
+}
+
+.explore-btn {
+  padding: 10px 25px;
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0;
+}
+
+/* Hover Interactions */
+.service-card:hover .card-darkener {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.service-card:hover .service-overlay {
+  bottom: 0;
+}
+
+.service-card:hover .service-title {
+  transform: translateY(-50px);
+}
+
+.service-card:hover .service-overlay p,
+.service-card:hover .explore-btn {
+  opacity: 1;
+}
+
+.explore-btn:hover {
+  background: var(--accent-color);
+  color: var(--pure-white);
+}
+
+/* ==========================================================================
+   8. WHY CHOOSE US SECTION
+   ========================================================================== */
+.why-choose-us {
+  padding: 60px 20px;
+  background-color: var(--pure-white); /* Contrasts nicely with var(--bg-color) */
+}
+
+.wcu-intro {
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.wcu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wcu-card {
+  background-color: var(--bg-color);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wcu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.wcu-card i {
+  font-size: 2.5rem;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.wcu-card h4 {
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  margin-bottom: 15px;
+}
+
+.wcu-card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   9. CONTACT SECTION
+   ========================================================================== */
+.contact-section {
+  padding: 60px 20px;
+  background-color: var(--bg-color);
+}
+
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact-image-wrapper {
+  width: 100%;
+}
+
+.contact-image {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form-wrapper {
+  background: var(--pure-white);
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form-wrapper h3 {
+  font-size: 24px;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.contact-form-wrapper p {
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  background-color: #fafafa;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: var(--pure-white);
+}
+
+.contact-form .cta-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   10. FOOTER SECTION
+   ========================================================================== */
+.footer {
+  background-color: var(--text-dark);
+  color: var(--pure-white);
+  padding: 60px 20px 20px 20px;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 40px auto;
+}
+
+.footer-logo {
+  height: 65px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.about-col p {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.footer-col h4 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.footer-col h4::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 30px;
+  height: 2px;
+  background-color: var(--accent-color);
+}
+
+.links-col ul {
+  list-style: none;
+}
+
+.links-col ul li {
+  margin-bottom: 10px;
+}
+
+.links-col ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.links-col ul li a:hover {
+  color: var(--accent-color);
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--pure-white);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.social-links a:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+.footer-email {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.footer-email i {
+  color: var(--accent-color);
+  margin-right: 10px;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   6. MEDIA QUERIES (TABLETS - 768px and up)
+   ========================================================================== */
+@media (min-width: 768px) {
+  
+  /* Navbar adjustments for Tablet/Desktop */
+  .hamburger {
+    display: none; /* Hide mobile menu button */
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    position: static; /* Removes absolute positioning */
+    width: auto;
+    box-shadow: none;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    padding: 10px 5px;
+    font-size: 15px;
+    position: relative;
+  }
+
+  /* Animated underline for Desktop Nav */
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease-in-out;
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* Hero Section adjustments */
+  .hero {
+    height: 80vh; 
+  }
+
+  .carousel-content h2 {
+    font-size: 3rem;
+  }
+
+  .carousel-content p {
+    font-size: 1.2rem;
+  }
+
+  .nav-btn {
+    font-size: 24px;
+    padding: 15px 20px;
+  }
+
+  .prev-btn { left: 20px; }
+  .next-btn { right: 20px; }
+
+  /* About Section Side-by-Side */
+  .about-content {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .about-image-wrapper {
+    flex: 1;
+  }
+
+  .about-image {
+    height: 400px;
+  }
+
+  .about-text {
+    flex: 1;
+  }
+
+  .about-text h3 {
+    font-size: 26px;
+  }
+  
+  /* Services Section Grid Layout */
+  .service-container1, .service-container2 {
+    flex-direction: row; /* Places 2 cards side-by-side */
+  }
+
+  .service-card {
+    height: 350px;
+  }
+
+  /* Why Choose Us Grid */
+  .wcu-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .wcu-card {
+    flex: 1 1 calc(50% - 30px); /* 2 columns */
+  }
+
+  /* Contact Section Side-by-Side */
+  .contact-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .contact-image-wrapper {
+    flex: 1;
+  }
+
+  .contact-form-wrapper {
+    flex: 1;
+  }
+
+  /* Footer Columns Side-by-Side */
+  .footer-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .footer-col {
+    flex: 1;
+  }
+  
+  .about-col {
+    flex: 2; /* Gives the about section more width */
+    padding-right: 40px;
+  }
+}
+
+/* ==========================================================================
+   7. MEDIA QUERIES (LARGE DESKTOPS - 1024px and up)
+   ========================================================================== */
+@media (min-width: 1024px) {
+  
+  .navbar {
+    padding: 20px 50px; /* More breathing room on wide screens */
+  }
+
+  .about-image {
+    height: 450px; /* Taller image for large monitors */
+  }
+
+  .carousel-content h2 {
+    font-size: 4rem; /* Massive, cinematic typography for hero */
+  }
+
+  .service-title {
+    font-size: 1.8rem;
+  }
+
+/* ... Keep your existing 1024px rules ... */
+  
+  /* Why Choose Us 4-Column Grid */
+  .wcu-card {
+    flex: 1 1 calc(25% - 30px); /* 4 columns on large screens */
+  }
+  
+}
